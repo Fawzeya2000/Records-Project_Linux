@@ -1,6 +1,7 @@
 #!/bin/sh
 
 OPERATION_INSERT="Insert"
+OPERATION_DELETE="Delete"
 STATUS_SUCCESS="Success"
 STATUS_FAILURE="Failure"
 
@@ -40,7 +41,7 @@ audit_event() {
 }
 
 search_db() {
-    echo "$(grep "$1" "$_file_path")"
+    echo "$(grep "$1" "$_file_path" | sort)"
 }
 
 print_menu() {
