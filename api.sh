@@ -13,13 +13,14 @@ EOF
 
 add_record() {
     get_existing_records "$1" "$2"
-    if [ $? -eq 0 ]; then
+    _matched_records=$?
+
+    if [ $_matched_records -eq 0 ]; then
         echo "$1,$2" >> "$_file_path"
         return 0
     fi
-
-    _matched_records=$?
-
+    
+    printf "Matched records: $_matched_records\n"
     if [ "$_matched_records" -eq 1 ]; then
         add_to_existing_record $_existing_records $_number_of_records
         return
