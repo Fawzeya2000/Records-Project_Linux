@@ -16,7 +16,8 @@ EOF
 
 add_to_existing_record() {
     _old_value="$1"
-   
+    printf "Old value: $_old_value\n"
+
     _new_addition=$2
     IFS=","
     read -ra _old_parts <<< "$_old_value"
@@ -52,7 +53,6 @@ add_record() {
     fi
 
     _existing_records=$(search_db "$_record_name")
-    printf "Existing records: $_existing_records\n"
     if [ -z "$_existing_records" ]; then
         echo "$1,$2" >> "$_file_path"
         return 0
@@ -60,13 +60,14 @@ add_record() {
 
     _num_rows=$(echo "$_existing_records" | wc -l)
     if [ "$_num_rows" -eq 1 ]; then
-        echo "Number of rows is 1"
         add_to_existing_record $_existing_records $_number_of_records
         return
     else
         print_menu "$_existing_records"
         _chosen_line="$(show_menu "$_existing_records")"
-        add_to_existing_record "${_existing_records["$_chosen_line"]}" "$_number_of_records"
+        _specific_line=$(echo "$_existing_records" | sed -n "${_chosen_line}p")
+        printf "Specific line: $_specific_line\n"
+        add_to_existing_record $_specific_line $_number_of_records
     fi
    
     if [ $? -eq 0 ]; then
