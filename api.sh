@@ -65,7 +65,8 @@ update_record() {
 }
 
 search_record() {
-    echo "Not implemented"
+    _existing_records=$(search_db "$1")
+    echo "$_existing_records"
 }
 
 exit() {

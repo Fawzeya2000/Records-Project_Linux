@@ -32,7 +32,18 @@ main() {
                 print_action_status "$?" "$OPERATION_DELETE"
             ;;
             3) update_record ;;
-            4) search_record ;;
+            4)
+                read -p "Enter a record name: " _name
+                _results=$(search_record "$_name")
+
+                _counter="$(echo "$_results" | wc -l)"
+                if [ "$_counter" -eq 0 ]; then
+                    audit_event "$OPERATION_SEARCH" "$STATUS_FAILURE"
+                else
+                    printf "%s\n" "$_results"
+                    audit_event "$OPERATION_SEARCH" "$STATUS_SUCCESS"
+                fi
+            ;;
             5) exit 0 ;;
             *) echo "Invalid choice. Please try again." ;;
         esac
