@@ -40,14 +40,7 @@ audit_event() {
 }
 
 search_db() {
-    _record_to_search="$1"
-    _number_of_results="$(grep -c "$_file_path" "$_record_to_search")"
-    if [ "$_number_of_results" -eq 1 ]; then
-        echo "Chosen line: $_lines"
-        return 0
-    fi
-
-    echo "$(grep "$_file_path" "$_record_to_search")"
+    echo "$(grep "$1" "$_file_path")"
 }
 
 print_menu() {
@@ -55,7 +48,7 @@ print_menu() {
     _counter=1
 
     while IFS= read -r line; do
-        echo "$_counter. $line"
+        printf "%s. %s\n" "$_counter" "$line"
         _counter=$((_counter + 1))
     done <<< "$_lines"
 }

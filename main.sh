@@ -14,6 +14,23 @@ Exit
 EOF
 )
 
+add_to_existing_record() {
+    _old_value="$1"
+   
+    _new_addition=$2
+    IFS=","
+    read -ra _old_parts <<< "$_old_value"
+    _old_number="${_old_parts[1]}"
+   
+    _new_value=$(($_old_number + $_new_addition))
+    _new_record="${_old_parts[0]},$_new_value"
+  
+    echo $_old_value
+    echo $_new_record
+    sed -i.bak "s/$_old_value/$_new_record/g" "$_file_path"
+    IFS=""
+}
+
 add_record() {
     _record_name="$1"
     _number_of_records="$2"
@@ -34,11 +51,26 @@ add_record() {
         return 1
     fi
 
-    echo "$1,$2" >> "$_file_path"
-    
+    _existing_records=$(search_db "$_record_name")
+    printf "Existing records: $_existing_records\n"
+    if [ -z "$_existing_records" ]; then
+        echo "$1,$2" >> "$_file_path"
+        return 0
+    fi
+
+    _num_rows=$(echo "$_existing_records" | wc -l)
+    if [ "$_num_rows" -eq 1 ]; then
+        echo "Number of rows is 1"
+        add_to_existing_record $_existing_records $_number_of_records
+        return
+    else
+        print_menu "$_existing_records"
+        _chosen_line="$(show_menu "$_existing_records")"
+        add_to_existing_record "${_existing_records["$_chosen_line"]}" "$_number_of_records"
+    fi
+   
     if [ $? -eq 0 ]; then
         return 0
-        
     else
         return 1
         
