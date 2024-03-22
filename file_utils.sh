@@ -82,3 +82,13 @@ show_menu() {
     # Print the chosen line
     echo "$_choice"
 }
+
+print_action_status() {
+    _status="$1"
+    _operation="$2"
+    if [ "$_status" -eq 0 ]; then
+        audit_event "$_operation" "$STATUS_SUCCESS"
+    else
+        audit_event "$_operation" "$STATUS_FAILURE"
+    fi
+}

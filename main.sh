@@ -14,56 +14,34 @@ Exit
 EOF
 )
 
-# run_menu() {
-#     echo "1. Add record"
-#     echo "2. Delete record"
-#     echo "3. Update record"
-#     echo "4. Search record"
-#     echo "5. Exit"
-
-#     read -p "Enter your choice: " _choice
-    
-#     case "$_choice" in
-#         1)  
-#             read -p "Enter a record name: " _name
-#             read -p "Enter the number of records: " _records
-#             add_record "$_name" "$_records"
-#         ;;
-#         2) delete_record ;;
-#         3) update_record ;;
-#         4) search_record ;;
-#         5) exit 0 ;;
-#         *) echo "Invalid choice. Please try again." ;;
-#     esac
-# }
-
 add_record() {
     _record_name="$1"
     _number_of_records="$2"
 
     # Input validation
     if [ -z "$_record_name" ]; then
-        echo "Error: No file path provided."
+        echo "Error: No record name was provided."
         return 1
     fi
 
     if [ -z "$_number_of_records" ]; then
-        echo "Error: No file path provided."
+        echo "Error: no numbers of records was provided."
         return 1
     fi
 
-    # Check if the record numbers is a number
-    # if ! [[ "$_number_of_records" =~ ^[0-9]+$ ]]; then
-    #     echo "Error: Invalid number of records."
-    #     return 1
-    # fi
+    if ! [[ "$_number_of_records" =~ ^[0-9]+$  ]]; then
+        echo "Error: Invalid number of records."
+        return 1
+    fi
 
     echo "$1,$2" >> "$_file_path"
     
     if [ $? -eq 0 ]; then
-        audit_event OPERATION_INSERT STATUS_SUCCESS
+        return 0
+        
     else
-        audit_event OPERATION_INSERT STATUS_FAILURE
+        return 1
+        
     fi
 }
 
@@ -100,6 +78,7 @@ main() {
                 read -p "Enter a record name: " _name
                 read -p "Enter the number of records: " _records
                 add_record "$_name" "$_records"
+                print_action_status "$?" "$OPERATION_INSERT"
             ;;
             2) delete_record ;;
             3) update_record ;;
