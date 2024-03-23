@@ -1,7 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 . ./file_utils.sh
 . ./record_actions.sh
 
+# Define the API menu
 _api_manu=$(cat << EOF
 Add record
 Delete record
@@ -14,6 +15,9 @@ Exit
 EOF
 )
 
+# add_record adds new record to the DB
+# it uses the global variable $_file_path to determine the file path
+# and searches for the record name in the DB, builds an option menu for the user.
 add_record() {
     validate_records_input "$1" "$2"
     _input_valid=$?
@@ -23,15 +27,16 @@ add_record() {
 
     get_existing_records "$1"
     _matched_records=$?
+    
 
     if [ $_matched_records -eq 0 ]; then
-        echo "$1,$2/n" >> "$_file_path"
+        echo "$1,$2" >> "$_file_path"
         return 0
     fi
 
     if [ "$_matched_records" -eq 1 ]; then
         add_to_existing_record $_existing_records "$2"
-        return
+        return 0
     else
         _records_to_present=$(cat <<EOF
 $_existing_records
@@ -43,7 +48,7 @@ EOF
         _specific_line=$(echo "$_records_to_present" | sed -n "${_chosen_line}p")
         
         if [ "$_chosen_line" -eq $(($_matched_records + 1)) ]; then
-            echo "$1,$2/n" >> "$_file_path"
+            echo "$1,$2" >> "$_file_path"
         else
             add_to_existing_record "$_specific_line" "$2"
         fi
@@ -87,6 +92,7 @@ delete_records() {
     fi
 }
 
+# print_record_summary prints the number of records in the DB
 print_record_summary() {
     _counter=0
     get_db_summary
@@ -99,23 +105,23 @@ print_record_summary() {
     audit_event "$OPERATION_SUMMARY" "$_counter"
 }
 
+# search_record searches for a record in the DB
 search_record() {
     echo "$(search_db "$1")"
 }
 
+# print_all prints all records in the DB
 print_all() {
     _records=$(search_db "")
 
-    for line in $_records; do
-        record_name="${line%%,*}"
-        num_records="${line#*,}"
-        _record="$record_name $num_records"
-        echo "$_record"
-       
-        audit_event "$OPERATION_PRINTALL" "$_record"
-    done
+    while IFS= read -r line; do
+       echo $line
+       audit_event "$OPERATION_PRINTALL" "$line"
+    done <<< "$_records"
+    IFS=""
 }
 
+# update_record_name updates the name of a record in the DB
 update_record_name() {
     _old_name="$1"
     _new_name="$2"
@@ -152,6 +158,7 @@ update_record_name() {
     return $?
 }
 
+# update_record_instances updates the number of instances of a record in the DB
 update_record_instances() {
     _name="$1"
     _new_instances="$2"

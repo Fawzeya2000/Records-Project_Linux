@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 OPERATION_INSERT="Insert"
 OPERATION_DELETE="Delete"
@@ -10,11 +10,13 @@ OPERATION_AMOUNTH="UpdateAmount"
 STATUS_SUCCESS="Success"
 STATUS_FAILURE="Failure"
 
+# Set the file path and the audit file path for this file
 set_file_path() {
     _file_path="$1"
     _audit_file_path="$_file_path"_log
 }
 
+# validates the file path is indeed a path of a text file
 check_valid_path() {
     # Check if the argument is provided
     if [ -z "$_file_path" ]; then
@@ -28,12 +30,6 @@ check_valid_path() {
         return 1
     fi
 
-    # # Check if the file is a text file
-    # if ! file -b "$_file_path" | grep -q "text"; then
-    #     echo "Error: File '$_file_path' is not a text file."
-    #     return 1
-    # fi
-
     # If all checks pass, return success
     return 0
 }
@@ -45,20 +41,22 @@ audit_event() {
     echo "$(date +"%d/%-m/%Y ")$(date +"%T") $_audit_message $_status" >> "$_audit_file_path"
 }
 
+# searches for a record in the DB
+# the function first looks for the exact match of the search term
+# if no exact match is found, it looks for partial matches
 search_db() {
     _search_term="$1"
-    _res=$(grep -c -w "$_search_term" "$_file_path")
+    _res=$(grep -c "^$_search_term\>," "$_file_path")
     if [ "$_res" -eq 0 ]; then
          grep "$_search_term" "$_file_path" | sort
-         return
     fi
 
-     if [ "$_res" -eq 1 ]; then
-         grep -w "$_search_term" "$_file_path"
-         return
+    if [ "$_res" -eq 1 ]; then
+        grep -w "$_search_term" "$_file_path"
     fi
 }
 
+# Responsible for printing a menu
 print_menu() {
     _lines="$1"
     _counter=1

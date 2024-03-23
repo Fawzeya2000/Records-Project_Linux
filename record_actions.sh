@@ -18,9 +18,8 @@ get_existing_records() {
 
 add_to_existing_record() {
     _old_value="$1"
-    printf "Old value: $_old_value\n"
-
     _new_addition=$2
+    
     IFS=","
     read -ra _old_parts <<< "$_old_value"
     _old_number="${_old_parts[1]}"

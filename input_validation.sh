@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 validate_record_name() {
     _record_name="$1"

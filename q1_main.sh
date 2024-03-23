@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Source the file_utils.sh file to import the check_valid_path function
 . ./file_utils.sh
@@ -9,14 +9,14 @@ _file_path="$1"
 main() {
     set_file_path "$1"
     _file_path="$1"
-    # if ! check_valid_path "$_file_path"; then
-    #     exit 1
-    # fi
+    if ! check_valid_path "$_file_path"; then
+        echo "Error: Invalid file path provided."
+        return 1
+    fi
 
     while true; do
         print_menu "$_api_manu"
         _chosen_line="$(show_menu "$_api_manu")"
-        echo "Chosen line: $_chosen_line"
         
         case $_chosen_line in
             1)  
@@ -78,7 +78,9 @@ main() {
             7) 
                 print_all
             ;;
-            8) exit 0 ;;
+            8) 
+                return 0
+             ;;
             *) echo "Invalid choice. Please try again." ;;
         esac
     done
