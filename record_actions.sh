@@ -62,16 +62,20 @@ validate_records_data() {
 
 substract_from_existing_record() {
     _old_value="$1"
-    printf "Old value: $_old_value\n"
-
     _new_sub=$2
+
     IFS=","
     read -ra _old_parts <<< "$_old_value"
     _old_number="${_old_parts[1]}"
    
     _new_value=$(($_old_number - $_new_sub))
     
-    if [ $_new_value -le 0 ]; then
+     if [ $_new_value -lt 0 ]; then
+        echo "Error: The number of records to delete is greater than the existing number of records."
+        return 1
+    fi
+
+    if [ $_new_value -eq 0 ]; then
         sed -i.bak "/$_old_value/d" "$_file_path"
         return $?
     fi

@@ -22,20 +22,36 @@ add_record() {
         return 0
     fi
 
-    printf "Matched records: $_matched_records\n"
     if [ "$_matched_records" -eq 1 ]; then
-        add_to_existing_record $_existing_records $_number_of_records
+        add_to_existing_record $_existing_records "$2"
         return
     else
-        print_menu "$_existing_records"
-        _chosen_line="$(show_menu "$_existing_records")"
-        _specific_line=$(echo "$_existing_records" | sed -n "${_chosen_line}p")
-        add_to_existing_record $_specific_line $_number_of_records
+        # _records_to_present=$(cat <<EOF
+        #     $_existing_records
+        #     $1 $2
+        #     EOF
+        # )
+        _records_to_present=$(cat <<EOF
+$_existing_records
+New record - $1,$2
+EOF
+            )
+        print_menu "$_records_to_present"
+        _chosen_line="$(show_menu "$_records_to_present")"
+        _specific_line=$(echo "$_records_to_present" | sed -n "${_chosen_line}p")
+        
+        if ["$_chosen_line" -eq $(($_matched_records + 1)) ]; then
+            echo "$1,$2" >> "$_file_path"
+        else
+            add_to_existing_record "$_specific_line" "$2"
+        fi
     fi
    
     if [ $? -eq 0 ]; then
+        echo "Add record action was performed successfully"
         return 0
     else
+        echo "Add record action was performed failed"
         return 1
         
     fi
@@ -46,16 +62,16 @@ delete_records() {
     _matched_records=$?
 
     if [ "$_matched_records" -eq 1 ]; then
-        substract_from_existing_record $_existing_records $_number_of_records
-        return 0
+        substract_from_existing_record "$_existing_records" "$2"
     else
         print_menu "$_existing_records"
         _chosen_line="$(show_menu "$_existing_records")"
         _specific_line=$(echo "$_existing_records" | sed -n "${_chosen_line}p")
-        substract_from_existing_record $_specific_line $_number_of_records
+        substract_from_existing_record "$_specific_line" "$2"
     fi
    
     if [ $? -eq 0 ]; then
+        echo "Delete record action was performed successfully"
         return 0
     else
         return 1
@@ -80,17 +96,11 @@ update_record() {
 }
 
 search_record() {
-    _existing_records=$(search_db "$1")
-    echo "$_existing_records"
+    echo "$(search_db "$1")"
 }
 
 print_all() {
     _records=$(search_db "")
-
-    while IFS= read -r line; do
-        num_records="${line#*,}"
-        _counter=$((_counter + num_records))
-    done < "$_file_path"
     
     for line in $_records; do
         record_name="${line%%,*}"

@@ -37,7 +37,11 @@ main() {
                 _results=$(search_record "$_name")
 
                 _counter="$(echo "$_results" | wc -l)"
-                echo "Number of records found: $_counter"
+                if [ -z "$_results" ]; then
+                    audit_event "$OPERATION_SEARCH" "$STATUS_FAILURE"
+                    return 0
+                fi
+
                 if [ "$_counter" -eq 0 ]; then
                     audit_event "$OPERATION_SEARCH" "$STATUS_FAILURE"
                 else
