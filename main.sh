@@ -31,8 +31,29 @@ main() {
                 delete_records "$_name" "$_records"
                 print_action_status "$?" "$OPERATION_DELETE"
             ;;
-            3) update_record ;;
+            3)
+                read -p "Enter a record name: " _name
+                read -p "Enter a new record name: " _new_name
+                update_record_name "$_name" "$_new_name"
+                if [ $? -eq 0 ]; then
+                    echo "Update record name action was performed successfully"
+                    audit_event "$OPERATION_UPDATE" "$STATUS_SUCCESS"
+                else
+                    audit_event "$OPERATION_UPDATE" "$STATUS_FAILURE"
+                fi
+            ;;
             4)
+                read -p "Enter a record name: " _name
+                read -p "Enter the new number of instances: " _instances
+                update_record_instances "$_name" "$_instances"
+                if [ $? -eq 0 ]; then
+                    echo "Update record instances action was performed successfully"
+                    audit_event "$OPERATION_AMOUNTH" "$STATUS_SUCCESS"
+                else
+                    audit_event "$OPERATION_AMOUNTH" "$STATUS_FAILURE"
+                fi
+            ;;
+            5)
                 read -p "Enter a record name: " _name
                 _results=$(search_record "$_name")
 
@@ -49,7 +70,7 @@ main() {
                     audit_event "$OPERATION_SEARCH" "$STATUS_SUCCESS"
                 fi
             ;;
-            5) 
+            6) 
                 print_record_summary 
             ;;
             6) 
