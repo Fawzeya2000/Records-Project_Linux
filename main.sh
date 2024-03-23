@@ -37,6 +37,7 @@ main() {
                 _results=$(search_record "$_name")
 
                 _counter="$(echo "$_results" | wc -l)"
+                echo "Number of records found: $_counter"
                 if [ "$_counter" -eq 0 ]; then
                     audit_event "$OPERATION_SEARCH" "$STATUS_FAILURE"
                 else
@@ -44,7 +45,13 @@ main() {
                     audit_event "$OPERATION_SEARCH" "$STATUS_SUCCESS"
                 fi
             ;;
-            5) exit 0 ;;
+            5) 
+                print_record_summary 
+            ;;
+            6) 
+                print_all
+            ;;
+            7) exit 0 ;;
             *) echo "Invalid choice. Please try again." ;;
         esac
     done

@@ -3,6 +3,8 @@
 OPERATION_INSERT="Insert"
 OPERATION_DELETE="Delete"
 OPERATION_SEARCH="Search"
+OPERATION_SUMMARY="PrintAmount"
+OPERATION_PRINTALL="PrintAll"
 STATUS_SUCCESS="Success"
 STATUS_FAILURE="Failure"
 
@@ -38,7 +40,7 @@ check_valid_path() {
 audit_event() {
     _audit_message="$1"
     _status="$2"
-    echo "$(date +"%d/%-m/%Y ") $(date +"%T") $_audit_message $_status" >> "$_audit_file_path"
+    echo "$(date +"%d/%-m/%Y ")$(date +"%T") $_audit_message $_status" >> "$_audit_file_path"
 }
 
 search_db() {
@@ -86,4 +88,15 @@ print_action_status() {
     else
         audit_event "$_operation" "$STATUS_FAILURE"
     fi
+}
+
+get_db_summary() {
+    _counter=0
+
+    while IFS= read -r line; do
+        num_records="${line#*,}"
+        _counter=$((_counter + num_records))
+    done < "$_file_path"
+    
+    return $_counter
 }
