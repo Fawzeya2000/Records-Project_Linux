@@ -1,0 +1,88 @@
+23/3/2024 14:01:27 Insert Success
+23/3/2024 14:01:52 PrintAll test1111111 2
+23/3/2024 14:02:10 Insert Success
+23/3/2024 14:02:50 Insert Success
+23/3/2024 14:02:52 PrintAll test1111111 3
+23/3/2024 14:02:52 PrintAll test3 1
+23/3/2024 14:02:56 PrintAmount 4
+23/3/2024 14:03:01 Search Failure
+23/3/2024 14:03:44 Search Failure
+23/3/2024 14:04:00 Search Failure
+23/3/2024 14:04:17 Search Failure
+23/3/2024 14:05:05 Search Failure
+23/3/2024 14:08:41 Insert Success
+23/3/2024 14:09:19 Search Success
+23/3/2024 14:09:25 Search Success
+23/3/2024 14:09:30 Search Failure
+23/3/2024 14:09:33 Search Failure
+23/3/2024 14:09:51 Delete Failure
+23/3/2024 14:19:22 Insert Success
+23/3/2024 14:19:25 PrintAll test 1
+23/3/2024 14:19:25 PrintAll test1111111 3
+23/3/2024 14:19:25 PrintAll test3 2
+23/3/2024 14:24:51 Insert Failure
+23/3/2024 14:25:00 Insert Success
+23/3/2024 14:25:30 PrintAll test 1112
+test1111111,3
+test3,2
+23/3/2024 14:31:31 Insert Success
+23/3/2024 14:38:11 Insert Success
+23/3/2024 14:40:38 Insert Success
+23/3/2024 14:40:57 Insert Success
+23/3/2024 14:41:01 Insert Success
+23/3/2024 14:45:00 Insert Success
+23/3/2024 14:45:19 Insert Success
+23/3/2024 14:45:29 PrintAll tes 1
+23/3/2024 14:45:29 PrintAll test 1
+23/3/2024 14:45:29 PrintAll test 1112
+23/3/2024 14:45:29 PrintAll test1111111 3
+23/3/2024 14:45:29 PrintAll test3 2
+23/3/2024 14:45:37 Search Failure
+23/3/2024 14:46:18 Search Success
+23/3/2024 14:46:28 PrintAll tes 1
+23/3/2024 14:46:28 PrintAll test 1
+23/3/2024 14:46:29 PrintAll test 1112
+23/3/2024 14:46:29 PrintAll test1111111 3
+23/3/2024 14:46:29 PrintAll test3 2
+23/3/2024 14:46:35 Search Success
+23/3/2024 14:46:46 Search Success
+23/3/2024 14:48:58 Search Success
+23/3/2024 14:49:08 Search Success
+23/3/2024 14:49:30 Search Success
+23/3/2024 14:51:31 Insert Success
+23/3/2024 14:51:49 Search Success
+23/3/2024 14:51:53 Search Success
+23/3/2024 14:51:59 Search Failure
+23/3/2024 14:52:48 PrintAll tes 1
+23/3/2024 14:52:48 PrintAll test 1113
+23/3/2024 14:52:48 PrintAll test1111111 3
+23/3/2024 14:52:48 PrintAll test3 2
+23/3/2024 14:52:55 Insert Success
+23/3/2024 14:53:01 Insert Success
+23/3/2024 14:54:16 Search Success
+23/3/2024 14:54:21 Search Failure
+23/3/2024 14:55:17 Insert Success
+23/3/2024 14:55:26 Insert Success
+23/3/2024 14:55:48 Insert Success
+23/3/2024 14:55:54 Insert Success
+23/3/2024 15:00:20 Insert Success
+23/3/2024 15:00:29 Insert Success
+23/3/2024 15:00:33 Insert Success
+23/3/2024 15:00:49 Insert Success
+23/3/2024 15:00:55 Insert Success
+23/3/2024 15:01:02 Insert Success
+23/3/2024 15:29:54 Insert Failure
+23/3/2024 15:30:05 Insert Success
+23/3/2024 15:30:50 Insert Success
+23/3/2024 15:30:57 Insert Success
+23/3/2024 15:31:02 Delete Success
+23/3/2024 15:31:10 Insert Failure
+23/3/2024 15:31:24 UpdateName Success
+23/3/2024 15:31:31 UpdateAmount Success
+23/3/2024 15:31:38 Search Success
+23/3/2024 15:31:45 Search Success
+23/3/2024 15:31:50 PrintAmount 2123
+23/3/2024 15:31:54 PrintAll new name 1
+test,2117
+test1111111,3
+test3,2

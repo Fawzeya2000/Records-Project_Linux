@@ -15,11 +15,17 @@ EOF
 )
 
 add_record() {
-    get_existing_records "$1" "$2"
+    validate_records_input "$1" "$2"
+    _input_valid=$?
+    if [ $_input_valid -eq 1 ]; then
+        return 1
+    fi
+
+    get_existing_records "$1"
     _matched_records=$?
 
     if [ $_matched_records -eq 0 ]; then
-        echo "$1,$2" >> "$_file_path"
+        echo "$1,$2/n" >> "$_file_path"
         return 0
     fi
 
@@ -37,7 +43,7 @@ EOF
         _specific_line=$(echo "$_records_to_present" | sed -n "${_chosen_line}p")
         
         if [ "$_chosen_line" -eq $(($_matched_records + 1)) ]; then
-            echo "$1,$2" >> "$_file_path"
+            echo "$1,$2/n" >> "$_file_path"
         else
             add_to_existing_record "$_specific_line" "$2"
         fi
@@ -54,7 +60,13 @@ EOF
 }
 
 delete_records() {
-    get_existing_records "$1" "$2"
+    validate_records_input "$1" "$2"
+    _input_valid=$?
+    if [ $_input_valid -eq 1 ]; then
+        return 1
+    fi
+
+    get_existing_records "$1"
     _matched_records=$?
 
     if [ "$_matched_records" -eq 1 ]; then

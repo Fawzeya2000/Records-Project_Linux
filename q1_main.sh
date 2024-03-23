@@ -59,11 +59,13 @@ main() {
 
                 _counter="$(echo "$_results" | wc -l)"
                 if [ -z "$_results" ]; then
+                    echo "No records found"
                     audit_event "$OPERATION_SEARCH" "$STATUS_FAILURE"
-                    return 0
+                    continue
                 fi
 
                 if [ "$_counter" -eq 0 ]; then
+                    echo "No records found"
                     audit_event "$OPERATION_SEARCH" "$STATUS_FAILURE"
                 else
                     printf "%s\n" "$_results"
@@ -73,10 +75,10 @@ main() {
             6) 
                 print_record_summary 
             ;;
-            6) 
+            7) 
                 print_all
             ;;
-            7) exit 0 ;;
+            8) exit 0 ;;
             *) echo "Invalid choice. Please try again." ;;
         esac
     done

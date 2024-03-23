@@ -12,7 +12,7 @@ STATUS_FAILURE="Failure"
 
 set_file_path() {
     _file_path="$1"
-    _audit_file_path="$_file_path _log"
+    _audit_file_path="$_file_path"_log
 }
 
 check_valid_path() {
@@ -46,7 +46,17 @@ audit_event() {
 }
 
 search_db() {
-    echo "$(grep "$1" "$_file_path" | sort)"
+    _search_term="$1"
+    _res=$(grep -c -w "$_search_term" "$_file_path")
+    if [ "$_res" -eq 0 ]; then
+         grep "$_search_term" "$_file_path" | sort
+         return
+    fi
+
+     if [ "$_res" -eq 1 ]; then
+         grep -w "$_search_term" "$_file_path"
+         return
+    fi
 }
 
 print_menu() {
@@ -78,7 +88,6 @@ show_menu() {
         return 1
     fi
 
-    # Print the chosen line
     echo "$_choice"
 }
 

@@ -1,15 +1,10 @@
 #!/bin/sh
+
 . ./file_utils.sh
+. ./input_validation.sh
 
 get_existing_records() {
     _record_name="$1"
-    _number_of_records="$2"
-    validate_records_data "$_record_name" "$_number_of_records"
-    _input_valid=$?
-
-    if [ $_input_valid -eq 1 ]; then
-        return 1
-    fi
 
     _existing_records=$(search_db "$_record_name")
     if [ -z "$_existing_records" ]; then
@@ -37,27 +32,6 @@ add_to_existing_record() {
     echo $_new_record
     sed -i.bak "s/$_old_value/$_new_record/g" "$_file_path"
     IFS=""
-}
-
-validate_records_data() {
-    _record_name="$1"
-    _number_of_records="$2"
-
-    # Input validation
-    if [ -z "$_record_name" ]; then
-        echo "Error: No record name was provided."
-        return 1
-    fi
-
-    if [ -z "$_number_of_records" ]; then
-        echo "Error: no numbers of records was provided."
-        return 1
-    fi
-
-    if ! [[ "$_number_of_records" =~ ^[0-9]+$  ]]; then
-        echo "Error: Invalid number of records."
-        return 1
-    fi
 }
 
 substract_from_existing_record() {
